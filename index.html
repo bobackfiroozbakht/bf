@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BF</title>
+  <meta name="theme-color" content="#000000">
+  <style>
+    :root { --font: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;font-family:var(--font);background:#fff;color:#000}
+
+    /* Center area */
+    .stage{height:100vh;display:grid;grid-template-rows:auto 1fr auto;align-items:center;justify-items:center}
+
+    /* Home layout */
+    #home{display:flex;align-items:center;justify-content:center;flex-direction:column;width:100%;height:100%}
+
+    /* Homepage quote box */
+    #quote-box{display:flex;align-items:center;justify-content:center;width:min(80vmin,1000px);max-width:98vw;height:min(60vmin,720px);margin:0 auto;}
+    .quote{font-family:var(--font);font-size:2.4rem;font-weight:700;text-transform:uppercase;text-align:center;line-height:1.05;letter-spacing:0.01em;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+    @media (max-width:600px){
+      .quote{font-size:2.1rem;}
+      #quote-box{width:98vw;max-width:98vw;margin-left:1vw;margin-right:1vw;}
+      html, body {
+        height:100dvh;
+        min-height:100dvh;
+        overflow:hidden !important;
+        position:fixed;
+        width:100vw;
+      }
+      .stage {
+        position:fixed;
+        top:0; left:0; right:0; bottom:0;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        height:100dvh;
+        min-height:100dvh;
+        width:100vw;
+        overflow:hidden;
+      }
+      #info {
+        position:fixed;
+        inset:0;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+        align-items:center;
+        height:100dvh;
+        min-height:100dvh;
+        width:100vw;
+        overflow:hidden;
+        z-index:100;
+      }
+      #proj-title {
+        margin-bottom:2.5rem;
+      }
+    }
+
+     /* Top bar spacing and bottom name placement (grid rows handle centering)
+       Match the info panel's padding so top and bottom align visually. */
+     .top-bar{padding-top:1.2rem;width:100%;display:flex;justify-content:center;align-items:flex-start;z-index:50}
+
+    #proj-title{position:static;margin:0 0 1.6rem 0;text-align:center;font-weight:700;z-index:40;text-transform:uppercase;transition:color .18s,background .18s,letter-spacing .18s;cursor:pointer;}
+    #proj-title span{display:inline-block;transition:opacity .18s,letter-spacing .18s;}
+
+    #initials{
+      font-weight:700;
+      font-size:1rem; /* match info page text size */
+      line-height:1;
+      cursor:pointer;
+      user-select:none;
+      transition:font-size .18s ease, letter-spacing .18s ease;
+      letter-spacing:-0.02em;
+      text-transform:uppercase;
+    }
+
+    /* Info panel (hidden by default) */
+    /* Info overlay - center the panel (dark theme) */
+    #info{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:#000;
+      align-items:center;
+      justify-content:center;
+      -webkit-overflow-scrolling:touch;
+      color:#fff;
+    }
+    #info.active{display:flex}
+
+    /* Panel that holds content - match the image box size and center */
+    #info .info-panel{
+      /* match image-box width but fill vertically so it "bleeds" to top/bottom */
+      width: min(60vmin, 720px);
+      max-width: 90vw;
+      height: 100vh;
+      max-height: 100vh;
+      margin: 0 auto; /* center horizontally */
+      padding: 1.2rem;
+      box-sizing: border-box;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      background: transparent;
+      border-radius: 0;
+      display:flex;
+      flex-direction:column; /* single column */
+      align-items:flex-start; /* left-justified */
+      gap:1rem;
+      text-align:left; /* ensure left alignment */
+      font-size:1rem; /* ensure info panel text size */
+    }
+    /* ensure the inner column blocks take full width when stacked */
+    #info .info-left, #info .info-right{width:100%}
+    /* ensure all text in panel is white */
+    #info .info-panel, #info .info-panel *{color:#fff}
+
+    /* Force all text inside the info panel to be bold */
+    #info .info-panel, #info .info-panel * { font-weight:700; }
+    .bio{line-height:1.38;font-size:1rem;margin-bottom:0.5rem}
+    .projects{list-style:none;padding-left:0;margin-bottom:1.2rem}
+    .projects li{font-weight:700;padding:0.08rem 0;text-transform:none}
+
+    .section-title{font-weight:700;margin-top:0.25rem;margin-bottom:0.25rem;text-transform:uppercase}
+    .education{margin-bottom:1rem}
+    .job-list{list-style:none;padding-left:0;margin:0 0 1rem 0}
+    .job-list li{font-weight:700;padding:0.08rem 0}
+
+    .contact{display:inline-block;font-weight:700;cursor:pointer}
+
+    /* Small screens adjustments */
+    @media (max-width:600px){
+      #initials{font-size:1rem}
+      /* Make info panel full-height on small screens and keep text left-justified
+         while keeping the panel horizontally centered */
+      #info .info-panel{width:calc(100% - 2.4rem);height:100vh;padding:1rem;flex-direction:column;align-items:center;text-align:left}
+      #info .info-left, #info .info-right{width:100%}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage">
+
+    <!-- TOP: initials -->
+    <div class="top-bar">
+      <div id="initials" style="cursor:pointer">BF</div>
+    </div>
+
+    <!-- Home: image viewer + project title -->
+    <div id="home">
+      <div id="quote-box">
+        <div class="quote" id="quote">YOUR QUOTE GOES HERE</div>
+      </div>
+    </div>
+
+    <!-- BOTTOM: full name (centered in grid bottom row) -->
+    <div id="proj-title" tabindex="0" style="cursor:pointer">INFO</div>
+
+    <!-- Info: bio + projects (hidden until clicked) -->
+    <!-- Debug button removed -->
+    <div id="info" aria-hidden="true">
+      <div class="info-panel" id="info-panel">
+        <div class="info-left">
+          <p class="bio">BOBACK FIROOZBAKHT is an architect, developer, and educator with a career spanning some of the most demanding environments in design and real estate development.<br><br>Formative experience at OMA, Rafael Viñoly Architects, and TsAO & McKOWN led him to starting his own development company at 26. That foundation informed his subsequent roles at Starwood Hotels and Extell Development Company, where he brought a grounded viewpoint and holistic sensibility to large-scale development and global hospitality markets. He has also served on the faculty at the University of Texas at Arlington and contributed to campaign site strategy for the Office of President William J. Clinton and the Hillary for America presidential campaign.<br><br>Boback continues to practice across design and real estate development, holding design integrity, building efficiency, environmental responsibility, and financial success as equal imperatives.<br><br>His work has been recognized by Builder Magazine, D Magazine, the Cooper-Hewitt, GE, Architecture Boston, the Clinton Global Initiative, and Design Indaba.</p>
+          <div class="education">
+            <div style="height:1.2rem"></div>
+            <div class="section-title">EDUCATION</div>
+            <div>Master of Interior Architecture<br>Rhode Island School of Design</div>
+            <div style="margin-top:0.5rem">Bachelor of Science in Architecture<br>University of Texas, Arlington</div>
+          </div>
+        </div>
+
+        <div class="info-right">
+          <div class="section-title">PROJECT LIST</div>
+          <ul class="projects">
+            <li>Arlington Park Center</li>
+            <li>Calender Grove</li>
+            <li>180 East 125th Street</li>
+            <li>259 Clinton Street</li>
+            <li>356 Fulton Street</li>
+            <li>1 Hotel Austin</li>
+            <li>1 Hotel Barcelona</li>
+            <li>1 Hotel Cairo</li>
+            <li>1 Hotel Copenhagen</li>
+            <li>1 Hotel Dallas</li>
+            <li>1 Hotel Denver</li>
+            <li>1 Hotel Diriyah Gate</li>
+            <li>1 Hotel Healdsburg</li>
+            <li>1 Hotel Hudson</li>
+            <li>1 Hotel Lake Como</li>
+            <li>1 Hotel Mexico City</li>
+            <li>1 Hotel Nashville</li>
+            <li>1 Hotel Niseko</li>
+            <li>1 Hotel Rancho Mirage</li>
+            <li>1 Hotel Rome</li>
+            <li>1 Hotel San Francisco</li>
+            <li>1 Hotel San Miguel</li>
+            <li>1 Hotel Seattle</li>
+            <li>1 Hotel South Beach</li>
+            <li>1 Hotel Tokyo</li>
+            <li>1 Hotel West Hollywood</li>
+            <li>Baccarat Copenhagen</li>
+            <li>Baccarat Diriyah Gate</li>
+            <li>Baccarat Florence</li>
+            <li>Baccarat London</li>
+            <li>Baccarat Miami</li>
+            <li>Baccarat Paris</li>
+            <li>Baccarat Rome</li>
+            <li>Dallas Warehouse District</li>
+            <li>Deloache Residence</li>
+            <li>Lavendale Residence</li>
+            <li>Marseille Residence</li>
+            <li>Potomac Estate</li>
+            <li>Potomac Residence</li>
+            <li>Preston Haven Residence</li>
+            <li>Travis Townhome 20</li>
+            <li>Travis Townhome 21</li>
+            <li>Great Taipei New Town District</li>
+            <li>OPEN Exhibition</li>
+            <li>Sangha Hotel & Retreat</li>
+          </ul>
+
+          <!-- INSTAGRAM button removed -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+    <script>
+    // Debug: force info overlay to show on load and add button
+    document.addEventListener('DOMContentLoaded', function(){
+      const initialsEl = document.getElementById('initials');
+      const homeEl = document.getElementById('home');
+      const infoEl = document.getElementById('info');
+      const projTitleEl = document.getElementById('proj-title');
+      const quoteEl = document.getElementById('quote');
+      let showingInfo = false;
+      // Header: BF changes to full name on hover/focus, reverts on leave/blur
+      function showHeaderFullName(){
+        initialsEl.textContent = 'BOBACK FIROOZBAKHT';
+      }
+      function showHeaderInitials(){
+        initialsEl.textContent = 'BF';
+      }
+      initialsEl.addEventListener('click', function(){
+        window.open('https://www.instagram.com/bobackfiroozbakht/', '_blank');
+      });
+      initialsEl.addEventListener('mouseenter', showHeaderFullName);
+      initialsEl.addEventListener('mouseleave', showHeaderInitials);
+      initialsEl.addEventListener('focus', showHeaderFullName);
+      initialsEl.addEventListener('blur', showHeaderInitials);
+      // Quotes array: add your quotes here
+      const quotes = [
+        'WHEN EVERYTHING\nIS UNIQUE\nNOTHING IS UNIQUE',
+        'LESS IS ENOUGH',
+        'PEOPLE ARE NOT NUMBERS',
+        'CONTEXT\nCONTEXT\nCONTEXT',
+        'DESIGN\nIS THE DECISION',
+        'HOSPITALITY IS\nA SERVICE\nNOT A STYLE',
+        'RETURN ON INVESTMENT\nAND DESIGN',
+        'LUXURY IS NOT LOUD',
+        'TIMELESS OVER TREND',
+        'DESIGN\nRESPONSIBLY',
+        'SPECULATIVE\nDESERVES BETTER'
+      ];
+      let currentQuote = 0;
+      function showQuote(index=0){
+        if (!quotes.length) return;
+        currentQuote = index % quotes.length;
+        quoteEl.innerHTML = quotes[currentQuote].replace(/\n/g, '<br>');
+      }
+      showQuote(0);
+      setInterval(()=>{ showQuote(currentQuote+1); }, 2000);
+      // Info overlay triggers
+      function showInfoOverlay(){
+        if (showingInfo) return; // Prevent stacking history if already open
+        infoEl.classList.add('active');
+        infoEl.setAttribute('aria-hidden','false');
+        infoEl.scrollTop = 0;
+        const infoPanel = infoEl.querySelector('.info-panel');
+        if (infoPanel) infoPanel.scrollTop = 0;
+        document.documentElement.style.setProperty('background', '#000', 'important');
+        document.body.style.setProperty('background', '#000', 'important');
+        homeEl.style.display = 'none';
+        if (projTitleEl) projTitleEl.style.display = 'none';
+        if (initialsEl) initialsEl.style.display = 'none';
+        showingInfo = true;
+        history.pushState({info:true}, document.title);
+      }
+      function hideInfoOverlay(){
+        infoEl.classList.remove('active');
+        infoEl.setAttribute('aria-hidden','true');
+        document.documentElement.style.setProperty('background', '#fff', 'important');
+        document.body.style.setProperty('background', '#fff', 'important');
+        homeEl.style.display = 'flex';
+        if (projTitleEl) projTitleEl.style.display = 'block';
+        if (initialsEl) initialsEl.style.display = 'flex';
+        showingInfo = false;
+      }
+      function attachInfoOpener(el) {
+        if (!el) return;
+        el.addEventListener('click', ()=>{ showInfoOverlay(); });
+        el.addEventListener('keypress', (e)=>{
+          if (e.key === 'Enter' || e.key === ' ') showInfoOverlay();
+        });
+      }
+      attachInfoOpener(projTitleEl);
+      window.addEventListener('popstate', (e)=>{
+        const state = e.state || {};
+        if (state.info) {
+          showInfoOverlay();
+        } else {
+          hideInfoOverlay();
+        }
+      });
+    });
+    // Remove duplicate/old script block that attaches info overlay triggers to initialsEl
+    // Make the entire info overlay clickable to close (including the panel and all its content)
+    document.addEventListener('DOMContentLoaded', function(){
+      const infoEl = document.getElementById('info');
+      const infoPanel = document.getElementById('info-panel');
+      if (infoEl) {
+        infoEl.addEventListener('click', function() {
+          history.back();
+        });
+      }
+      if (infoPanel) {
+        infoPanel.addEventListener('click', function() {
+          history.back();
+        });
+      }
+    });
+
+      function showHeaderFullName(){
+        initialsEl.textContent = 'BOBACK FIROOZBAKHT';
+      }
+      function showHeaderInitials(){
+        if (!showingInfo) initialsEl.textContent = 'BF';
+      }
+      initialsEl.addEventListener('mouseenter', showHeaderFullName);
+      initialsEl.addEventListener('mouseleave', showHeaderInitials);
+      initialsEl.addEventListener('focus', showHeaderFullName);
+      initialsEl.addEventListener('blur', showHeaderInitials);
+
+    // Footer hover: show BOBACK FIROOZBAKHT, hide INFO
+    // Header and footer: open info panel on click or Enter
+    function attachInfoOpener(el) {
+      if (!el) return;
+      el.addEventListener('click', ()=>{ openInfo(true); });
+      el.addEventListener('keypress', (e)=>{
+        if (e.key === 'Enter' || e.key === ' ') openInfo(true);
+      });
+    }
+    attachInfoOpener(initialsEl);
+    attachInfoOpener(projTitleEl);
+
+    if (projTitleEl && footerLabel && footerHover) {
+      projTitleEl.addEventListener('mouseenter', ()=>{
+        footerLabel.style.opacity = '0';
+        footerHover.style.opacity = '1';
+      });
+      projTitleEl.addEventListener('mouseleave', ()=>{
+        footerLabel.style.opacity = '1';
+        footerHover.style.opacity = '0';
+      });
+      projTitleEl.addEventListener('focus', ()=>{
+        footerLabel.style.opacity = '0';
+        footerHover.style.opacity = '1';
+      });
+      projTitleEl.addEventListener('blur', ()=>{
+        footerLabel.style.opacity = '1';
+        footerHover.style.opacity = '0';
+      });
+    }
+
+    // Show a random quote (or cycle if desired)
+    function showQuote(index=0){
+      if (!quotes.length) return;
+      currentQuote = index % quotes.length;
+      quoteEl.textContent = quotes[currentQuote];
+    }
+
+    // Optionally cycle quotes every 2s (uncomment to enable)
+    // setInterval(()=>{ showQuote(currentQuote+1); }, 2000);
+
+    // show the info panel; if pushHistory is true, push a history entry
+    function showInfo(pushHistory = true){
+      stopCycle();
+      homeEl.style.display = 'none';
+      if (projTitleEl) projTitleEl.style.display = 'none';
+      if (initialsEl) initialsEl.style.display = 'none';
+      infoEl.classList.add('active');
+      infoEl.setAttribute('aria-hidden','false');
+      showingInfo = true;
+      if (pushHistory) history.pushState({info:true}, document.title);
+    }
+
+    // hide the info panel (do not modify history here; popstate will handle)
+    function hideInfo(){
+      infoEl.classList.remove('active');
+      infoEl.setAttribute('aria-hidden','true');
+      homeEl.style.display = 'flex';
+      if (projTitleEl) projTitleEl.style.display = 'block';
+      if (initialsEl) initialsEl.style.display = 'flex';
+      collapseName();
+      startCycle();
+      showingInfo = false;
+    }
+
+    // toggle via history: open pushes state; close should call history.back()
+    function toggleInfo(){
+      if (!showingInfo){
+        showInfo(true);
+      } else {
+        history.back();
+      }
+    }
+
+    // open info via history push (used by clicking image or BF)
+    function openInfo(pushHistory = true){
+      showInfo(pushHistory);
+    }
+
+    // Images: auto-detect files named BF-<n> in the Images/ folder.
+    // Drop files like Images/BF-1.jpg, Images/BF-2.jpg, etc. (or .png/.webp).
+    // The script will probe up to `maxProbe` files and use the ones that exist.
+    const images = [];
+
+    function probeImages(prefix = 'BF', maxProbe = 20, exts = ['jpg','jpeg','png','webp']){
+      let pending = 0;
+      let started = false;
+      for (let i = 1; i <= maxProbe; i++){
+        for (const ext of exts){
+          pending++;
+          const path = `Images/${prefix}-${i}.${ext}`;
+          const img = new Image();
+          img.onload = () => {
+            images.push({ src: path, title: `${prefix}-${i}` });
+            if (!started) { started = true; startCycle(); }
+            pending--;
+            if (pending === 0 && !started) {
+              if (images.length > 0) startCycle();
+            }
+          };
+          img.onerror = () => { pending--; if (pending === 0 && !started) { if (images.length > 0) startCycle(); } };
+          // set src after handlers to avoid races
+          img.src = path;
+        }
+      }
+    }
+
+    function svgDataUrl(color, title){
+      // simple SVG colored background with subtle centered label; title used only for accessibility
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='1200'><rect width='100%' height='100%' fill='${color}'/></svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    function renderImage(index){
+      if (!images || images.length === 0) {
+        rotatingImg.src = '';
+        rotatingImg.alt = '';
+        return;
+      }
+      const item = images[index % images.length];
+      // use real image `src` when provided
+      if (item.src) {
+        rotatingImg.src = item.src;
+      } else if (item.color) {
+        rotatingImg.src = svgDataUrl(item.color, item.title);
+      } else {
+        rotatingImg.src = '';
+      }
+      rotatingImg.alt = item.title || '';
+      // Do not modify the bottom name anchor so clicks keep working
+      currentIndex = index % images.length;
+    }
+
+    function startCycle(){
+      stopCycle();
+      if (!images || images.length === 0) return;
+      renderImage(currentIndex);
+      slideInterval = setInterval(()=>{
+        renderImage(currentIndex + 1);
+      }, 2000);
+    }
+
+    function stopCycle(){
+      if (slideInterval) { clearInterval(slideInterval); slideInterval = null; }
+    }
+
+    // Open info panel from current image and pause cycling
+    function openInfoFromImage(){
+      showingInfo = true;
+      stopCycle();
+      homeEl.style.display = 'none';
+      infoEl.classList.add('active');
+      infoEl.setAttribute('aria-hidden','false');
+    }
+
+    // Pause on hover / pointer enter, resume on leave (desktop & touch-friendly)
+    if (imageBox) {
+      imageBox.addEventListener('pointerenter', ()=>{
+        stopCycle();
+      });
+      imageBox.addEventListener('pointerleave', ()=>{
+        if (!showingInfo) startCycle();
+      });
+      // also pause when touching on mobile
+      imageBox.addEventListener('touchstart', ()=>{ stopCycle(); }, {passive:true});
+      imageBox.addEventListener('touchend', ()=>{ if (!showingInfo) startCycle(); }, {passive:true});
+      // colorize on pointer/touch/click: add class while pressing or on keyboard activation
+      imageBox.addEventListener('pointerdown', ()=>{ imageBox.classList.add('colorize'); });
+      imageBox.addEventListener('pointerup', ()=>{ imageBox.classList.remove('colorize'); });
+      imageBox.addEventListener('pointercancel', ()=>{ imageBox.classList.remove('colorize'); });
+      imageBox.addEventListener('touchstart', ()=>{ imageBox.classList.add('colorize'); }, {passive:true});
+      imageBox.addEventListener('touchend', ()=>{ imageBox.classList.remove('colorize'); }, {passive:true});
+      imageBox.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter' || e.key === ' '){
+          imageBox.classList.add('colorize');
+          setTimeout(()=>{ imageBox.classList.remove('colorize'); }, 400);
+        }
+      });
+    }
+
+    // Start rotation on load and initialize history state
+    window.addEventListener('load', ()=>{
+      // set initial history state so back/forward work predictably
+      try { history.replaceState({info:false}, document.title); } catch(e){}
+      // probe for BF-1, BF-2, ... in Images/ and start the carousel when found
+      probeImages('BF', 20, ['jpg','jpeg','png','webp']);
+    });
+
+    // Handle browser navigation (back/forward) to open/close the info panel
+    window.addEventListener('popstate', (e)=>{
+      const state = e.state || {};
+      if (state.info) {
+        // show panel without pushing history
+        if (!showingInfo) showInfo(false);
+      } else {
+        // hide panel
+        if (showingInfo) hideInfo();
+      }
+    });
+
+    // Resume cycle when overlay is closed
+    // toggleInfo() already calls startCycle() when closing
+  </script>
+
+</body>
+</html>

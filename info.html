@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BF – Info</title>
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    :root { --font: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;font-family:var(--font);background:#000;color:#fff;overflow:hidden;}
+    .stage{height:100vh;display:grid;grid-template-rows:auto 1fr auto;align-items:center;justify-items:center}
+    .info-panel{
+      width:min(60vmin,720px);
+      max-width:90vw;
+      height:100vh;
+      max-height:100vh;
+      margin:0 auto;
+      padding:1.2rem;
+      box-sizing:border-box;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:1rem;
+      text-align:left;
+      font-size:1rem;
+      font-weight:700;
+    }
+    .bio{line-height:1.38;font-size:1rem;margin-bottom:0.5rem}
+    .section-title{font-weight:700;margin-top:0.25rem;margin-bottom:0.25rem;text-transform:uppercase}
+    .education{margin-bottom:1rem}
+    .projects{list-style:none;padding-left:0;margin-bottom:1.2rem}
+    .projects li{font-weight:700;padding:0.08rem 0;text-transform:none}
+    @media (max-width:600px){
+      .info-panel{width:calc(100% - 2.4rem);height:100vh;padding:1rem;align-items:center;text-align:left}
+    }
+    a { color: inherit; text-decoration: none; }
+    .info-panel, .info-panel * { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="info-panel" id="info-panel">
+      <div class="bio">BOBACK FIROOZBAKHT is an architect, developer, and educator with a career spanning some of the most demanding environments in design and real estate development.<br><br>Formative experience at OMA, Rafael Viñoly Architects, and TsAO & McKOWN led him to starting his own development company at 26. That foundation informed his subsequent roles at Starwood Hotels and Extell Development Company, where he brought a grounded viewpoint and holistic sensibility to large-scale development and global hospitality markets. He has also served on the faculty at the University of Texas at Arlington and contributed to campaign site strategy for the Office of President William J. Clinton and the Hillary for America presidential campaign.<br><br>Boback continues to practice across design and real estate development, holding design integrity, building efficiency, environmental responsibility, and financial success as equal imperatives.<br><br>His work has been recognized by Builder Magazine, D Magazine, the Cooper-Hewitt, GE, Architecture Boston, the Clinton Global Initiative, and Design Indaba.</div>
+      <div class="education">
+        <div style="height:1.2rem"></div>
+        <div class="section-title">EDUCATION</div>
+        <div>Master of Interior Architecture<br>Rhode Island School of Design</div>
+        <div style="margin-top:0.5rem">Bachelor of Science in Architecture<br>University of Texas, Arlington</div>
+      </div>
+      <div class="section-title">PROJECT LIST</div>
+      <ul class="projects">
+        <li>Arlington Park Center</li>
+        <li>Calender Grove</li>
+        <li>180 East 125th Street</li>
+        <li>259 Clinton Street</li>
+        <li>356 Fulton Street</li>
+        <li>1 Hotel Austin</li>
+        <li>1 Hotel Barcelona</li>
+        <li>1 Hotel Cairo</li>
+        <li>1 Hotel Copenhagen</li>
+        <li>1 Hotel Dallas</li>
+        <li>1 Hotel Denver</li>
+        <li>1 Hotel Diriyah Gate</li>
+        <li>1 Hotel Healdsburg</li>
+        <li>1 Hotel Hudson</li>
+        <li>1 Hotel Lake Como</li>
+        <li>1 Hotel Mexico City</li>
+        <li>1 Hotel Nashville</li>
+        <li>1 Hotel Niseko</li>
+        <li>1 Hotel Rancho Mirage</li>
+        <li>1 Hotel Rome</li>
+        <li>1 Hotel San Francisco</li>
+        <li>1 Hotel San Miguel</li>
+        <li>1 Hotel Seattle</li>
+        <li>1 Hotel South Beach</li>
+        <li>1 Hotel Tokyo</li>
+        <li>1 Hotel West Hollywood</li>
+        <li>Baccarat Copenhagen</li>
+        <li>Baccarat Diriyah Gate</li>
+        <li>Baccarat Florence</li>
+        <li>Baccarat London</li>
+        <li>Baccarat Miami</li>
+        <li>Baccarat Paris</li>
+        <li>Baccarat Rome</li>
+        <li>Dallas Warehouse District</li>
+        <li>Deloache Residence</li>
+        <li>Lavendale Residence</li>
+        <li>Marseille Residence</li>
+        <li>Potomac Estate</li>
+        <li>Potomac Residence</li>
+        <li>Preston Haven Residence</li>
+        <li>Travis Townhome 20</li>
+        <li>Travis Townhome 21</li>
+        <li>Great Taipei New Town District</li>
+        <li>OPEN Exhibition</li>
+        <li>Sangha Hotel & Retreat</li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    // Clicking anywhere in the info panel or background returns to homepage
+    document.addEventListener('DOMContentLoaded', function(){
+      document.body.addEventListener('click', function(){
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+</body>
+</html>
