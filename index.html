@@ -110,7 +110,7 @@
 
     <!-- TOP: initials -->
     <div class="top-bar">
-      <div id="initials" tabindex="0" style="cursor:pointer">BF</div>
+      <div id="initials" style="cursor:pointer">BF</div>
     </div>
 
     <!-- Home: image viewer + project title -->
@@ -214,13 +214,13 @@
             function showHeaderInitials(){
               initialsEl.textContent = 'BF';
             }
+            initialsEl.addEventListener('click', function(){
+              window.open('https://www.instagram.com/bobackfiroozbakht/', '_blank');
+            });
             initialsEl.addEventListener('mouseenter', showHeaderFullName);
             initialsEl.addEventListener('mouseleave', showHeaderInitials);
             initialsEl.addEventListener('focus', showHeaderFullName);
             initialsEl.addEventListener('blur', showHeaderInitials);
-            initialsEl.addEventListener('click', function(){
-              window.open('https://www.instagram.com/bobackfiroozbakht/', '_blank');
-            });
       // Quotes array: add your quotes here
       const quotes = [
         'WHEN EVERYTHING IS UNIQUE, NOTHING IS UNIQUE',
@@ -267,7 +267,7 @@
           if (e.key === 'Enter' || e.key === ' ') showInfoOverlay();
         });
       }
-      attachInfoOpener(initialsEl);
+      // Only attach info overlay trigger to INFO (proj-title), not BF
       attachInfoOpener(projTitleEl);
 
       // Footer hover effect removed; INFO always shown
@@ -527,3 +527,4 @@
 
 </body>
 </html>
+
