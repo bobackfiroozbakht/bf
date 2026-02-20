@@ -61,6 +61,54 @@
       z-index: 2;
     }
     @media (max-width:600px){
+          /* Landscape orientation fix for iPhone */
+          @media (max-width:900px) and (orientation: landscape) {
+            html, body {
+              height: 100vh;
+              min-height: 100vh;
+              width: 100vw;
+              overflow: auto;
+            }
+            .stage, #home, #info {
+              height: 100vh !important;
+              min-height: 100vh !important;
+              width: 100vw !important;
+              overflow: auto !important;
+            }
+            #info .info-panel {
+              height: 100vh !important;
+              max-height: 100vh !important;
+              overflow-y: auto !important;
+            }
+            /* If viewport height is less than 350px, show rotate message */
+            #rotate-message {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: fixed;
+              top: 0; left: 0; right: 0; bottom: 0;
+              background: #fff;
+              color: #000;
+              font-size: 1.2rem;
+              z-index: 9999;
+              text-align: center;
+            }
+          }
+        <div id="rotate-message" style="display:none;">Please rotate your device to portrait mode for the best experience.</div>
+          <script>
+            // Show rotate message if viewport height is too short (landscape on iPhone)
+            function checkRotateMessage() {
+              const rotateMsg = document.getElementById('rotate-message');
+              if (window.innerHeight < 350 && window.innerWidth > window.innerHeight) {
+                rotateMsg.style.display = 'flex';
+              } else {
+                rotateMsg.style.display = 'none';
+              }
+            }
+            window.addEventListener('resize', checkRotateMessage);
+            window.addEventListener('orientationchange', checkRotateMessage);
+            document.addEventListener('DOMContentLoaded', checkRotateMessage);
+          </script>
       html, body {
         height: 100dvh;
         min-height: 100dvh;
