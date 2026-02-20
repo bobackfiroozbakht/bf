@@ -202,11 +202,12 @@
             #info .info-panel {
               width: 100vw;
               max-width: 100vw;
-              height: 100vh;
-              max-height: 100vh;
+              height: calc(100vh - env(safe-area-inset-bottom, 0px));
+              max-height: calc(100vh - env(safe-area-inset-bottom, 0px));
               padding: 1.2rem;
               box-sizing: border-box;
               overflow-y: auto;
+              -webkit-overflow-scrolling: touch;
               border-radius: 0;
               display: block;
               text-align: left;
