@@ -207,18 +207,21 @@
       justify-content:center;
       -webkit-overflow-scrolling:touch;
       color:#000;
+      overflow-y: auto;
+      height: 100vh;
     }
     #info.active{display:flex}
     #info .info-panel{
-      width: min(60vmin, 720px);
-      max-width: 90vw;
+      width: min(60vmin, 700px);
+      max-width: 98vw;
       height: 100vh;
       max-height: 100vh;
       margin: 0 auto;
       padding: 1.2rem;
       box-sizing: border-box;
-      overflow:auto;
-      -webkit-overflow-scrolling:touch;
+      /* Remove panel scroll, let overlay scroll */
+      overflow: visible;
+      -webkit-overflow-scrolling:unset;
       background: transparent;
       border-radius: 0;
       display:flex;
@@ -236,6 +239,13 @@
           .projects{list-style:none;padding-left:0;margin-bottom:1.2rem}
           .projects li{font-weight:700;padding:0.08rem 0;text-transform:none}
           .section-title{font-weight:700;margin-top:0.25rem;margin-bottom:0.25rem;text-transform:uppercase}
+          .info-divider {
+            width: 105%;
+            margin: 1.2rem 0;
+            border-top: 2px solid #000;
+            height: 0;
+            opacity: 1;
+          }
           .education{margin-bottom:1rem}
           .job-list{list-style:none;padding-left:0;margin:0 0 1rem 0}
           .job-list li{font-weight:700;padding:0.08rem 0}
@@ -248,17 +258,17 @@
               height: 100dvh;
               min-height: 100dvh;
               width: 100vw;
-              overflow: hidden;
+              overflow-y: auto;
             }
             #info .info-panel {
               width: 100vw;
               max-width: 100vw;
-              height: 100dvh;
-              max-height: 100dvh;
+              height: auto;
+              max-height: none;
               padding: 1.2rem 4vw calc(1.2rem + env(safe-area-inset-bottom, 0px)) 4vw;
               box-sizing: border-box;
-              overflow-y: auto;
-              -webkit-overflow-scrolling: touch;
+              overflow: visible;
+              -webkit-overflow-scrolling: unset;
               border-radius: 0;
               display: block;
               text-align: left;
@@ -300,13 +310,12 @@
       Formative experience at OMA, Rafael Viñoly Architects, and TsAO & McKOWN led him to starting his own development company at 26. That foundation informed his subsequent roles at Starwood Hotels and Extell Development Company, where he brought a grounded viewpoint and holistic sensibility to large-scale development and global hospitality markets. He has also served on the faculty at the University of Texas at Arlington and contributed to campaign site strategy for the Office of President William J. Clinton and the Hillary for America presidential campaign.<br><br>
       Boback continues to practice across design and real estate development, holding design integrity, building efficiency, environmental responsibility, and financial success as equal imperatives.<br><br>
       His work has been recognized by Architecture Boston, Builder Magazine, Clinton Global Initiative, Cooper-Hewitt, D Magazine, Design Indaba, and GE.</div>
-
     <div style="height:1.2rem"></div>
     <div class="section-title">EDUCATION</div>
-    <div>Master of Interior Architecture, Honors<br>Rhode Island School of Design</div>
-    <div style="margin-top:0.5rem">Bachelor of Science in Architecture, Magna Cum Laude<br>University of Texas, Arlington</div>
-
+    <div>Master of Interior Architecture<br>Honors<br>Rhode Island School of Design</div>
+    <div style="margin-top:0.5rem">Bachelor of Science in Architecture<br>Magna Cum Laude<br>University of Texas, Arlington</div>
     <div style="height:1.2rem"></div>
+
     <div class="section-title">PROJECTS</div>
     <ul class="projects">
     <li>Arlington Park Center</li>
