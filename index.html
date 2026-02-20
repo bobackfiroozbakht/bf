@@ -85,7 +85,7 @@
         line-height: 1.18;
         width: 100%;
         max-width: 98vw;
-        min-height: 6em;
+        min-height: 7em;
         max-height: 55vh;
         overflow-wrap: break-word;
         word-break: break-word;
@@ -95,17 +95,19 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto;
-        background: none;
-        padding: 0 2vw;
+        background: #fff;
+        padding: 0 4vw;
+        overflow: hidden;
+        box-sizing: border-box;
       }
       #quote-box {
         width: 98vw;
         max-width: 98vw;
         margin-left: 1vw;
         margin-right: 1vw;
-        min-height: 7em;
+        min-height: 8em;
         max-height: 60vh;
-        overflow: auto;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -315,8 +317,7 @@
               function showQuote(index=0){
                 if (!quotes.length) return;
                 currentQuote = ((index % quotes.length) + quotes.length) % quotes.length;
-                // Use textContent for accessibility, then set innerHTML for <br> rendering
-                quoteEl.textContent = quotes[currentQuote];
+                // Only set innerHTML to avoid stacking issues
                 quoteEl.innerHTML = quotes[currentQuote].replace(/\n/g, '<br>');
               }
               showQuote(0);
