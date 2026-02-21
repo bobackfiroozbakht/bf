@@ -5,7 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BF</title>
   <style>
-    :root { --font: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    /* Neue Haas Grotesk font-face (local or fallback) */
+    @font-face {
+      font-family: 'Neue Haas Grotesk';
+      src: local('Neue Haas Grotesk'), local('NeueHaasGrotesk'),
+           url('https://fonts.cdnfonts.com/s/17274/NeueHaasGroteskTextW01-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+    }
+    :root { --font: 'Neue Haas Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;width:100%;font-family:var(--font);background:#fff;color:#000}
 
@@ -212,7 +220,7 @@
     }
     #info.active{display:flex}
     #info .info-panel{
-      width: min(60vmin, 700px);
+      width: min(75vmin, 900px);
       max-width: 98vw;
       height: 100vh;
       max-height: 100vh;
@@ -239,12 +247,13 @@
           .projects{list-style:none;padding-left:0;margin-bottom:1.2rem}
           .projects li{font-weight:700;padding:0.08rem 0;text-transform:none}
           .section-title{font-weight:700;margin-top:0.25rem;margin-bottom:0.25rem;text-transform:uppercase}
-          .info-divider {
-            width: 105%;
-            margin: 1.2rem 0;
-            border-top: 2px solid #000;
-            height: 0;
-            opacity: 1;
+          /* Headings: bold */
+          .section-title, #proj-title {
+            font-weight: 700;
+          }
+          /* Body text: regular */
+          .bio, #info .info-panel, .projects, .projects li, .job-list, .job-list li, .contact {
+            font-weight: 400;
           }
           .education{margin-bottom:1rem}
           .job-list{list-style:none;padding-left:0;margin:0 0 1rem 0}
@@ -306,11 +315,14 @@
           <div id="info" aria-hidden="true">
             <div class="info-panel" id="info-panel">
               <div class="info-content">
-      <div class="bio">BOBACK FIROOZBAKHT is an architect, developer, and educator with a career spanning some of the most demanding environments in design and real estate development.<br><br>
-      Formative experience at OMA, Rafael Viñoly Architects, and TsAO & McKOWN led him to starting his own development company at 26. That foundation informed his subsequent roles at Starwood Hotels and Extell Development Company, where he brought a grounded viewpoint and holistic sensibility to large-scale development and global hospitality markets. He has also served on the faculty at the University of Texas at Arlington and contributed to campaign site strategy for the Office of President William J. Clinton and the Hillary for America presidential campaign.<br><br>
-      Boback continues to practice across design and real estate development, holding design integrity, building efficiency, environmental responsibility, and financial success as equal imperatives.<br><br>
-      His work has been recognized by Architecture Boston, Builder Magazine, Clinton Global Initiative, Cooper-Hewitt, D Magazine, Design Indaba, and GE.</div>
-    <div style="height:1.2rem"></div>
+      <div class="bio">BOBACK FIROOZBAKHT works at the intersection of design, real estate development, and marketing. His career has taken shape across some of the most demanding environments in the field.<br><br>
+    Educated at the Rhode Island School of Design and the University of Texas at Arlington, he pursued architecture as a tool for development, with design as the driver of environmental, social, and financial outcomes.<br><br>
+    Early roles established fluency in design as both business and practice. At OMA New York, he managed North and South American business development under OMA Partner Shohei Shigematsu. At Rafael Viñoly Architects, he led new business development and secured the winning proposal for the Rockefeller River Campus at The Rockefeller University. At TsAO & McKOWN, he coordinated design directly with the development partner for the Sangha Hotel & Retreat in Suzhou, China.<br><br>
+    He founded his own company at 26, overseeing the design, development, construction, marketing, and sales of new construction, renovations, and the entitlements process for a 24-home residential community.<br><br>
+    He served as Design Director at Starwood Hotels across 1 Hotels & Homes and Baccarat Hotels & Residences, working directly with Barry Sternlicht. At Extell Development Company, as Vice President of Design, he directed pre-development planning and led Gary Barnett's first in-house interior design program for a 685,000-square-foot residential tower in Lower Manhattan.<br><br>
+    Alongside his practice, he served as Adjunct Assistant Professor at the University of Texas at Arlington and directed the Watershed Urbanism exhibition for the 2021 Venice Architecture Biennale, in collaboration with UNESCO Chair Adrian Parr Zaretsky. He also contributed to campaign site strategy and principal advance for President William J. Clinton and Secretary Hillary Clinton across 52 U.S. cities.<br><br>
+    Boback has been featured in Architecture Boston, Builder Magazine, the Clinton Global Initiative, Cooper-Hewitt, D Magazine, Design Indaba, and GE.<br><br>
+
     <div class="section-title">EDUCATION</div>
     <div>Master of Interior Architecture<br>Honors<br>Rhode Island School of Design</div>
     <div style="margin-top:0.5rem">Bachelor of Science in Architecture<br>Magna Cum Laude<br>University of Texas, Arlington</div>
@@ -344,13 +356,13 @@
     <li>1 Hotel South Beach</li>
     <li>1 Hotel Tokyo</li>
     <li>1 Hotel West Hollywood</li>
-    <li>Baccarat Copenhagen</li>
-    <li>Baccarat Diriyah Gate</li>
-    <li>Baccarat Florence</li>
-    <li>Baccarat London</li>
-    <li>Baccarat Miami</li>
-    <li>Baccarat Paris</li>
-    <li>Baccarat Rome</li>
+    <li>Baccarat Hotel Copenhagen</li>
+    <li>Baccarat Hotel Diriyah Gate</li>
+    <li>Baccarat Hotel Florence</li>
+    <li>Baccarat Hotel London</li>
+    <li>Baccarat Hotel Miami</li>
+    <li>Baccarat Hotel Paris</li>
+    <li>Baccarat Hotel Rome</li>
     <li>Dallas Warehouse District</li>
     <li>Deloache Residence</li>
     <li>Lavendale Residence</li>
@@ -363,6 +375,8 @@
     <li>Great Taipei New Town District</li>
     <li>OPEN Exhibition</li>
     <li>Sangha Hotel & Retreat</li>
+    </ul>
+   
     </ul>
               </div>
             </div>
